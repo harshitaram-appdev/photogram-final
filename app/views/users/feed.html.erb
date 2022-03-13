@@ -1,0 +1,121 @@
+<div>
+  <div>
+    <h1>
+       <%= @the_user.username %> 
+    </h1>
+
+    <dl>
+  <dt>Private</dt>
+  <dd><%= @the_user.private %> </dd>
+
+  <dt>Followers</dt>
+  <dd>
+    
+   <% followers = FollowRequest.where({ :recipient_id => @the_user.id, :status => "accepted"})%>
+    <%= followers.count%>
+
+
+      <div>
+          <form action="/insert_follow_request" method="post">
+            <input type="hidden" name="query_recipient_id" value="145">
+
+            <button>
+              Follow
+            </button>
+          </form>
+    </div>
+
+  </dd>
+
+  <dt>Following</dt>
+  <dd> 
+    <% following = FollowRequest.where({ :sender_id => @the_user.id, :status => "accepted"})%>
+    <%= following.count%>
+  </dd>
+
+</dl>
+
+
+<nav>
+  <ul>
+    <li>
+      <a href="/users/<%= @the_user.username %>">Profile</a>
+    </li>
+    <li>
+      <a href="/users/<%= @the_user.username %>/liked_photos">Liked photos</a>
+    </li>
+    <li>
+      <a href="/users/<%= @the_user.username %>/feed">Feed</a>
+    </li>
+    <li>
+      <a href="/users/<%= @the_user.username %>/discover">Discover</a>
+    </li>
+  </ul>
+</nav>
+<% pcount = 0 
+    following.each do |a_followreq|
+    matching_photos = Photo.where({ :owner_id => a_followreq.recipient_id})
+    pcount = matching_photos.count + pcount
+    end %>
+<h2>Feed (<%= pcount%>)</h2>
+
+<table border="1">
+  <tr>
+    <th>
+      Image
+    </th>
+
+    <th>
+      Owner
+    </th>
+
+    <th>
+      Caption
+    </th>
+
+    <th>
+      Posted
+    </th>
+
+    <th>
+      Likes
+    </th>
+
+    <th></th>
+  </tr>
+
+<% following.each do |a_followreq|
+    matching_photos = Photo.where({ :owner_id => a_followreq.recipient_id}) %>
+  <% matching_photos.each do |a_photo| %>
+      <tr>
+        <td>
+          <%= a_photo.image %>
+        </td>
+
+        <td>
+          <%= a_photo.owner_username.username %>
+        </td>
+
+        <td>
+          <%= a_photo.caption %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_photo.created_at) %> ago
+        </td>
+
+        <td>
+          <%= a_photo.likes_count %>
+        </td>
+
+        <td>
+          <a href="/photos/<%= a_photo.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+      <% end %>
+</table>
+
+  </body>

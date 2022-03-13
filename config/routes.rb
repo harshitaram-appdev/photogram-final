@@ -96,6 +96,8 @@ Rails.application.routes.draw do
 
   get("/users/:path_id/liked_photos", { :controller => "users", :action => "liked" })
 
+  get("/users/:path_id/feed", { :controller => "users", :action => "feed" })
+
   # ------------------------------
 
   # SIGN IN FORM
