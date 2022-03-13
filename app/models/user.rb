@@ -32,4 +32,19 @@ class User < ApplicationRecord
     return matching_likes
   end
 
+  def requests
+    my_id = self.id
+
+    matching_followreqs = FollowRequest.where({ :sender_id => my_id })
+
+    return matching_followreqs
+  end
+
+  def follower_requests
+    my_id = self.id
+
+    matching_followreqs = FollowRequest.where({ :recipient_id => my_id })
+
+    return matching_followreqs
+  end
 end

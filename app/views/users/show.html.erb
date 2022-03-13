@@ -10,7 +10,15 @@
 
   <dt>Followers</dt>
   <dd>
-    0
+    <% follower_count = 0 %>
+  <% @the_user.follower_requests.each do |a_request|
+          
+        if a_request.status == "accepted"
+            follower_count = follower_count + 1
+          end
+          end
+        %>
+        <%= follower_count%>
 
 
       <div>
@@ -26,9 +34,20 @@
   </dd>
 
   <dt>Following</dt>
-  <dd>0</dd>
+  <dd> 
+  <% following_count = 0 %>
+  <% @the_user.requests.each do |a_request|
+          
+        if a_request.status == "accepted"
+            following_count = following_count + 1
+          end
+          end
+        %>
+        <%= following_count%>
+  </dd>
 
 </dl>
+
 
 <nav>
   <ul>
@@ -47,7 +66,7 @@
   </ul>
 </nav>
 
-<h2>Own photos (0)</h2>
+<h2>Own photos (<%=@the_user.photography.count%>)</h2>
 
 <table border="1">
   <tr>
