@@ -90,7 +90,11 @@ Rails.application.routes.draw do
   # DELETE RECORD
   get("/cancel_user_account", { :controller => "user_authentication", :action => "destroy" })
 
-  get("/users", { :controller => "application", :action => "index" }) 
+  get("/users", { :controller => "users", :action => "index" }) 
+
+  get("/users/:path_id", { :controller => "users", :action => "show" })
+
+  get("/users/:path_id/liked_photos", { :controller => "users", :action => "liked" })
 
   # ------------------------------
 
