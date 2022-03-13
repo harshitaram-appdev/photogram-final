@@ -66,9 +66,24 @@
       </td>
       <%end%>
         <td>
+        <%if the_followreq == nil || the_followreq.status != "accepted"%>
+          <% if a_user.private == true%>
+
+          <a href="/users">
+            Show details
+            <% flash[:notice] = "You're not authorized for that."%>
+          </a>
+            <% else%>
+            <a href="/users/<%= a_user.username %>">  
+            Show details
+          </a>
+          <%end%>
+
+        <%else%>
           <a href="/users/<%= a_user.username %>">
             Show details
           </a>
+        <%end%>
         </td>
       </tr>
       <% end %>

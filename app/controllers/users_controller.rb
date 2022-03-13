@@ -15,6 +15,7 @@ class UsersController < ApplicationController
     @the_user = matching_users.at(0)
 
     render({ :template => "users/show.html.erb" })
+    
   end
 
   def liked
