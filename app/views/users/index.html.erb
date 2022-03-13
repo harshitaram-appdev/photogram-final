@@ -1,3 +1,4 @@
+
 <div>
   <div>
     <h1>
@@ -36,7 +37,34 @@
           No
           <%end %>
         </td>
+        <% if @current_user != nil%>
+        <td>
+          <% matching_followreq = FollowRequest.where({ :sender_id => @current_user.id, :recipient_id => a_user.id}) 
+              the_followreq = matching_followreq.at(0)
+              if the_followreq == nil || the_followreq.status == "rejected"
+          %>
+            <form action="/insert_follow_request" method="post">
+              <input type="hidden" name="query_recipient_id" value="<%= a_user.id%>">
+              <button>
+                Follow
+              </button>
+            </form>
+            <%else%>
+            <% if the_followreq.status == "pending"%>
 
+            Request sent.
+
+            <a href="/delete_follow_request/<%= the_followreq.id %>">
+              Cancel
+            </a>
+            <% elsif the_followreq.status == "accepted" %>
+            <a href="/delete_follow_request/<%= the_followreq.id %>">
+              Unfollow
+            </a>
+            <%end%>
+            <%end%>
+      </td>
+      <%end%>
         <td>
           <a href="/users/<%= a_user.username %>">
             Show details

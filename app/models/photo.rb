@@ -12,6 +12,7 @@
 #  owner_id       :integer
 #
 class Photo < ApplicationRecord
+  mount_uploader :image, ImageUploader
   def owner_username 
     my_id = self.owner_id
 
@@ -20,5 +21,13 @@ class Photo < ApplicationRecord
     the_user = matching_users.at(0)
 
     return the_user
+  end
+
+  def comments
+    my_id = self.id
+
+    matching_comments = Comment.where({ :photo_id => my_id })
+
+    return matching_comments
   end
 end

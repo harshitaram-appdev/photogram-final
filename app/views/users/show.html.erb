@@ -1,3 +1,4 @@
+
 <div>
   <div>
     <h1>
@@ -20,17 +21,59 @@
         %>
         <%= follower_count%>
 
+<%if @current_user.id == @the_user.id%>
+
+<h4>Pending follow requests</h4>
+
+      <ul>
+      <% unfollowed =  FollowRequest.where({ :recipient_id => @the_user.id, :status => "pending"})
+       unfollowed.each do |a_follow|
+        matching_user = User.where({ :id => a_follow.sender_id })%>
+        <li>
+          <%= matching_user.at(0).username %>
+        </li>
+        <%end%>
+      </ul>
+
+<dt>Edit user</dt>
+  <dd>
+    <form action="/modify_user" method="post">
+      <label for="browser_username">Username</label>
+      <input id="browser_username" type="text" name="query_username" placeholder="Enter a username..."
+        value="<%= @current_user.username%>">
+
+      <label for="browser_private">Private?</label>
+      <input id="browser_private" type="checkbox" name="query_private" >
+
+      <button>Update user</button>
+    </form>
+  </dd>
+
+<% else%>
+
+<% matching_followreqs = FollowRequest.where({:sender_id => @current_user.id, :recipient_id => @the_user.id, :status => "accepted"})
+    the_followreq = matching_followreqs.at(0)
+  if the_followreq != nil %>
+
+<div>
+          <a href="/delete_follow_request/<%= the_followreq.id %>">
+              Unfollow
+            </a>
+    </div>
+
+<%else %>
 
       <div>
           <form action="/insert_follow_request" method="post">
-            <input type="hidden" name="query_recipient_id" value="145">
+            <input type="hidden" name="query_recipient_id" value="<%= @the_user.id%>">
 
             <button>
               Follow
             </button>
           </form>
     </div>
-
+    <% end%>
+<% end%>
   </dd>
 
   <dt>Following</dt>
