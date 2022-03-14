@@ -78,16 +78,8 @@
 
   <dt>Following</dt>
   <dd> 
-  <% following_count = 0 %>
-  <% @the_user.requests.each do |a_request|
-          
-        if a_request.status == "accepted"
-            following_count = following_count + 1
-          end
-          end
-        %>
-        <%= following_count%>
-  </dd>
+    <% following = FollowRequest.where({ :sender_id => @the_user.id, :status => "accepted"})%>
+    <%= following.count%>
 
 </dl>
 
@@ -138,7 +130,7 @@
 <% @the_user.photography.each do |a_photo| %>
       <tr>
         <td>
-          <%= a_photo.image %>
+          <img src="<%= a_photo.image %>" class="img-responsive">
         </td>
 
         <td>
