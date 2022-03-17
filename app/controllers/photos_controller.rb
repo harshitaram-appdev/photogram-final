@@ -14,7 +14,11 @@ class PhotosController < ApplicationController
 
     @the_photo = matching_photos.at(0)
 
+    if @current_user.present?
     render({ :template => "photos/show.html.erb" })
+    else
+      redirect_to("/", { :notice => "You have to sign in first" })
+    end
   end
 
   def create

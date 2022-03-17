@@ -22,7 +22,7 @@
   <li>
   <a href = "/photos">All public photos</a>
   </li>
-  <%if session[:user_id] == nil %>
+  <%if @current_user.present? == false %>
   <li>
   <a href = "/user_sign_in">Sign In</a>
   </li>
@@ -38,6 +38,8 @@
   </li>
   <% end %>
   </ul>
+  <%= notice%>
+  <%= alert%>
     <%= yield %>
   </body>
 </html>
